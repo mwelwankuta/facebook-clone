@@ -1,14 +1,11 @@
 module.exports = {
-  // Uncomment the line below to enable the experimental Just-in-Time ("JIT") mode.
-  // https://tailwindcss.com/docs/just-in-time-mode
-  // mode: "jit",
+  mode: "jit",
   theme: {
     extend: {},
   },
   variants: {},
   plugins: [],
   purge: {
-    // Filenames to scan for classes
     content: [
       "./src/**/*.html",
       "./src/**/*.js",
@@ -17,7 +14,6 @@ module.exports = {
       "./src/**/*.tsx",
       "./public/index.html",
     ],
-    // Options passed to PurgeCSS
     options: {
       // Whitelist specific selectors by name
       // safelist: [],
