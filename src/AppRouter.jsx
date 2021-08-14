@@ -1,33 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import NavBar from "./components/NavBar";
-
-// page imports
-import home from "./pages/home";
-import login from "./pages/login";
-import profile from "./pages/profile";
-import myprofile from "./pages/my-profile";
-import findfriends from "./pages/find-friends";
-import post from "./pages/post";
 import { useMediaQuery } from "react-responsive";
 
+// page imports
+import Home from "./pages/home";
+import Login from "./pages/login";
+import Profile from "./pages/profile";
+import MyProfile from "./pages/my-profile";
+import FindFriends from "./pages/find-friends";
+import PageNotFound from "./pages/page-not-found";
+import Post from "./pages/post";
+import Chats from "./pages/chats";
+import MobileChats from "./pages/mobile/mobile-chats";
+import MobileChatsList from "./pages/mobile/mobile-chats-list";
+import Loading from "./pages/loading";
+
 const AppRouter = () => {
+  const isLaptopOrDesktop = useMediaQuery({ query: "(min-width:768px)" });
   const isLargeMobileDevice = useMediaQuery({ query: "(max-width:768px)" });
-  const isMobileDevice = useMediaQuery({ query: "(max-width:517px)" });
-  const isSmallerMobileDevice = useMediaQuery({ query: "(max-width:420px)" });
+
+  const [loading, setLoading] = useState(true)
+
+  if (loading === true) {
+    if (window.performance) {
+      if (window.performance.navigation.type === 1) {
+        return <Loading loading={loading} setLoading={setLoading} />;
+      }
+    }
+  }
+
   return (
     <BrowserRouter>
-      <NavBar />
       <Switch>
-        <Route path="/login" component={login} />
-        <Route path="/find-friends" component={findfriends} />
-        <Route path="/profile/:id" component={profile} />
-        <Route path="/profile" component={myprofile} />
-        <Route path="/post/:id" component={post} />
-        {isLargeMobileDevice && <Route path="/search" component={post} />}
-        <Route exact path="/" component={home} />
-        <Route path="*" render={() => <h1>Empty</h1>} />
-        
+        {isLaptopOrDesktop && <Route path="/chats" component={Chats} />}
+        <Route exact path="/" component={Home} />
+        <Route path="/find-friends" component={FindFriends} />
+        <Route exact path="/profile/:id" component={Profile} />
+        <Route path="/profile" component={MyProfile} />
+        <Route path="/post/:id" component={Post} />
+        <Route path="/login" component={Login} />
+        {isLargeMobileDevice && (
+          <>
+            <Route path="/search" component={Post} />
+            <Route exact path="/chats" component={MobileChatsList} />
+            <Route exact path="/chats/:id" component={MobileChats} />
+          </>
+        )}
+
+        <Route path="*" component={PageNotFound} />
       </Switch>
     </BrowserRouter>
   );

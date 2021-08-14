@@ -110,7 +110,7 @@ const NavBar = () => {
             name="search"
             id="search"
             placeholder="Search Friends..."
-            className="bg-white text-sm py-1 text-gray-700"
+            className="bg-white text-sm py-1 text-gray-700 w-full"
             onChange={(e) => handleSearch(e)}
           />
         </div>
